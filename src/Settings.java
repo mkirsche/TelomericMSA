@@ -71,7 +71,10 @@ public class Settings {
 					key = key.substring(1);
 				}
 				String val = args[i].substring(1 + equalIdx);
-				
+				if(val.length() == 0)
+				{
+					continue;
+				}
 				switch(key)
 				{
 					case("reads_file"):

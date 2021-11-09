@@ -134,7 +134,6 @@ static HashSet<String> extractReadNames() throws Exception
  */
 static void printAlignments(String[][] alignments, String[] readNames, boolean filterSeqError, String outfile) throws Exception
 {
-	System.out.println(filterSeqError+" "+outfile);
 	String[] res = combine(alignments, filterSeqError, Settings.preMotif);
 	
 	PrintWriter out = new PrintWriter(new File(outfile));
