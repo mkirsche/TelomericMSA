@@ -21,7 +21,7 @@ usage() {
 	echo 'Optional arguments:'
 	echo ''
 	echo '  readname_list      - file containing list of reads to target (one per line)'
-	echo '  free_length        - number of bases at the end of each read which is aligned freely (defualt 50)'
+	echo '  free_length        - number of bases at the end of each read which is aligned freely (default 50)'
 	echo ''
 }
 
