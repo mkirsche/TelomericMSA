@@ -21,6 +21,7 @@ usage() {
 	echo 'Optional arguments:'
 	echo ''
 	echo '  readname_list      - file containing list of reads to target (one per line)'
+	echo '  free_length        - number of bases at the end of each read which is aligned freely (defualt 50)'
 	echo ''
 }
 
@@ -55,6 +56,9 @@ while [ $# -gt 0 ]; do
       ;;
     subtelomere_length=*)
       SUBTELOMERE_LENGTH="${1#*=}"
+      ;;
+    free_length=*)
+      FREE_LENGTH="${1#*=}"
       ;;
     *)
       printf "Error: unknown option: $1\n"
@@ -139,5 +143,5 @@ MOTIF=`samtools faidx $REFERENCE_GENOME $CHRNAME:$MOTIF_START-$MOTIF_END | tail 
 
 javac $BINDIR/src/*.java
 #echo $READS_FILE $PAF_FILE $OUTPREFIX $READNAME_LIST $MOTIF $SUBMOTIF
-java -cp $BINDIR/src MSA reads_file=$READS_FILE paf_file=$PAF_FILE out_prefix=$OUTPREFIX readlist_file=$READNAME_LIST motif=$MOTIF premotif=$SUBMOTIF
+java -cp $BINDIR/src MSA reads_file=$READS_FILE paf_file=$PAF_FILE out_prefix=$OUTPREFIX readlist_file=$READNAME_LIST motif=$MOTIF premotif=$SUBMOTIF free_length=$FREE_LENGTH
 

@@ -29,6 +29,7 @@ Required arguments:
 Optional arguments:
 
   readname_list      - file containing list of reads to target (one per line)
+  free_length        - number of bases at the end of each read which is aligned freely (default 50)
 ```
 
 Arguments should be passed using the format `<argument_name>=value`. Running this script with no parameters will give a full usage menu.  An example of running it can be found in `run_sample.sh`.
