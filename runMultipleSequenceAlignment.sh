@@ -137,7 +137,7 @@ SUBMOTIF=`samtools faidx $REFERENCE_GENOME $CHRNAME:$SUBTELOMERE_START'-'$SUBTEL
 MOTIF_END=`expr $MOTIF_START + $MOTIF_LENGTH - 1`
 MOTIF=`samtools faidx $REFERENCE_GENOME $CHRNAME:$MOTIF_START-$MOTIF_END | tail -n +2 | tr -d '\n' | tr ACGTacgt TGCATGCA | rev`
 
-javac /home/mkirsche/eclipse-workspace/TelomereDetection/src/*.java
+javac $BINDIR/src/*.java
 #echo $READS_FILE $PAF_FILE $OUTPREFIX $READNAME_LIST $MOTIF $SUBMOTIF
-java -cp /home/mkirsche/eclipse-workspace/TelomereDetection/src MSA reads_file=$READS_FILE paf_file=$PAF_FILE out_prefix=$OUTPREFIX readlist_file=$READNAME_LIST motif=$MOTIF premotif=$SUBMOTIF
+java -cp $BINDIR/src MSA reads_file=$READS_FILE paf_file=$PAF_FILE out_prefix=$OUTPREFIX readlist_file=$READNAME_LIST motif=$MOTIF premotif=$SUBMOTIF
 
