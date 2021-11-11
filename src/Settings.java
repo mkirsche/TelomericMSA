@@ -33,9 +33,9 @@ public class Settings {
 		System.out.println("  premotif   (String) - unique sub-telomeric sequence used to anchor the alignments");
 		System.out.println();
 		System.out.println("Optional args:");
-		System.out.println("  free_length           (int)    [50] - the length of sequence at ends of reads which is not able to contain gaps");
-		System.out.println("  subtelomere_length    (int)    [50] - the length of unique subtelomeric sequence to keep from each read");
-		System.out.println("  readlist_file  (String)      - a file contaning list of read names to consider, one per line");
+		System.out.println("  free_length           (int) [50]  - the length of sequence at ends of reads which is not able to contain gaps");
+		System.out.println("  subtelomere_length    (int) [120] - the length of unique subtelomeric sequence to keep from each read");
+		System.out.println("  readlist_file  (String)           - a file contaning list of read names to consider, one per line");
 		System.out.println();
 	}
 	

@@ -117,7 +117,7 @@ static HashSet<String> extractReadNames() throws Exception
 		return readNames;
 	}
 	Scanner input = new Scanner(new FileInputStream(new File(Settings.readsListFile)));
-	input.nextLine();
+	//input.nextLine();
 	while(input.hasNext())
 	{
 		String line = input.nextLine();
