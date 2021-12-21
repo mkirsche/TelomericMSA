@@ -33,7 +33,7 @@ public static void main(String[] args) throws Exception
 				String key = getKey(readNames, name);
 				if(key.length() > 0)
 				{
-					readNameToSeq.put(key, seq.toString());
+					readNameToSeq.put(key+"_"+seq.toString().length(), seq.toString());
 				}
 			}
 			seq = new StringBuilder("");
@@ -53,7 +53,7 @@ public static void main(String[] args) throws Exception
 		String key = getKey(readNames, name);
 		if(key.length() > 0)
 		{
-			readNameToSeq.put(key, seq.toString());
+			readNameToSeq.put(key+"_"+seq.toString().length(), seq.toString());
 		}
 	}
 	
@@ -64,23 +64,23 @@ public static void main(String[] args) throws Exception
 		String line = input.nextLine();
 		String[] tokens = line.split("\t");
 		String readName = tokens[0];
-		String key = "";
-		for(String s : readNames)
-		{
-			if(readName.startsWith(s)) key = s;
-		}
+		String key = getKey(readNames, readName);
 		if(key.length() > 0)
 		{
 			int readEnd = Integer.parseInt(tokens[3]);
 			char strand = tokens[4].charAt(0);
-			String totalSeq = readNameToSeq.get(key);
-			
+			String totalSeq = readNameToSeq.get(key+"_"+Integer.parseInt(tokens[1]));
 			String telomereSeq = "";
 			if(strand == '-')
 			{
+				if(readEnd < 120) continue;
 				telomereSeq = revComp(totalSeq.substring(readEnd - 120));
 			}
 			else
+			{
+				continue;
+			}
+			if(telomereSeq.length() > 2000)
 			{
 				continue;
 			}
@@ -93,13 +93,19 @@ public static void main(String[] args) throws Exception
 	String[] names = new String[readNameToTelomere.size()];
 	String[][] alignments = new String[readNameToTelomere.size()][];
 	int idx = 0;
+	int readsAligned = 0;
 	for(String s : readNameToTelomere.keySet())
 	{
+		if(readsAligned > 0 && readsAligned%10 == 0)
+		{
+			System.err.println("Aligned " + readsAligned + " out of " + readNameToTelomere.size());
+		}
 		names[idx] = s;
 		String telomereSeq = readNameToTelomere.get(s);
 		telomereSeq = revComp(telomereSeq);
 		alignments[idx] = mg.findOptimalPath(telomereSeq);
 		idx++;
+		readsAligned++;
 	}
 	
 	printAlignments(alignments, names, false, Settings.outPrefix + "_msa_full.aln");

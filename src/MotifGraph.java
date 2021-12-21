@@ -81,7 +81,7 @@ public class MotifGraph {
 				}
 				state += numDeleted;
 				if(state == motif.length() || state == numStates) state = 0;
-				if(val >= preMotif.length())
+				if(Math.abs(val) >= preMotif.length())
 				{
 					// Insertion after deletion
 					alignedRef+= "-";

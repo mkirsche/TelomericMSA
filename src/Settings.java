@@ -107,7 +107,7 @@ public class Settings {
 			}
 		}
 		
-		if(readsFn.length() == 0 || readsListFile.length() == 0 || outPrefix.length() == 0 || 
+		if(readsFn.length() == 0 || outPrefix.length() == 0 || 
 				motif.length() == 0 || preMotif.length() == 0 || pafFile.length() == 0)
 		{
 			usage();
