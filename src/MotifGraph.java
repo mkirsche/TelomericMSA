@@ -22,6 +22,19 @@ public class MotifGraph {
 	}
 	
 	/*
+	 * Find the optimal alignment path with a custom free length specific to this read
+	 */
+	String[] findOptimalPath(String s, int freeLength)
+	{
+		int tmp = Settings.freeLength;
+		Settings.freeLength = freeLength;
+		System.out.println(Settings.freeLength);
+		String[] res = findOptimalPath(s);
+		Settings.freeLength = tmp;
+		return res;
+	}
+	
+	/*
 	 * Call dynamic programming function and then
 	 * extract the actual alignment from traceback info
 	 */
@@ -58,7 +71,7 @@ public class MotifGraph {
 		// The index in the read sequence
 		int index = 0;
 		
-		// The node in the graph (initiall the start of the pre-motif
+		// The node in the graph (initially the start of the pre-motif
 		int state = motif.length();
 		
 		// Whether the last action was a match/mismatch (0), insertion (+), or deletion (-)
@@ -226,7 +239,7 @@ public class MotifGraph {
 					double case2Match = runningProb 
 							+ bestScore(s, index + 1, (state + i + 2), 0) 
 							+ Math.log(preMotif.charAt(i+state+1-motif.length()) == s.charAt(index) ? probs[0] : probs[1]);
-					if(case2Match > res)
+					if(index+ Settings.freeLength < s.length() && case2Match > res)
 					{
 						res = case2Match;
 						trace[index][state][indel] = -(i + 1) - 2*motif.length();
@@ -235,7 +248,7 @@ public class MotifGraph {
 				if(state + i + 1 <= numStates)
 				{
 					double case2Insertion = runningProb + Math.log(Settings.probInsertion) + bestScore(s, index + 1, (state + i + 1), 1);
-					if(case2Insertion > res)
+					if(index+ Settings.freeLength < s.length() && case2Insertion > res)
 					{
 						res = case2Insertion;
 						trace[index][state][indel] = -(i + 1) - preMotif.length() - 2*motif.length();
@@ -249,7 +262,7 @@ public class MotifGraph {
 				runningProb += Math.log(Settings.probDeletionContinue);
 			}
 			double case3 = Math.log(probs[2]) + bestScore(s, index + 1, state, 1);
-			if(case3 > res)
+			if(index+ Settings.freeLength < s.length() && case3 > res)
 			{
 				res = case3;
 				trace[index][state][indel] = 1;
@@ -319,7 +332,7 @@ public class MotifGraph {
 			
 			// Deletion followed by inserted base
 			double case2Insertion = runningProb + Math.log(Settings.probInsertion) + bestScore(s, index + 1, (state + i + 1)%motif.length(), 1);
-			if(index+50 < s.length() && case2Insertion > res)
+			if(index + Settings.freeLength < s.length() && case2Insertion > res)
 			{
 				res = case2Insertion;
 				// Negative trace value in [len(motif),2*len(motif)) is deletion then insertion
@@ -332,7 +345,7 @@ public class MotifGraph {
 		
 		// Case 3: Insert a base
 		double case3 = Math.log(probs[2]) + bestScore(s, index + 1, (state)%motif.length(), 1);
-		if(index+50 < s.length() && case3 > res)
+		if(index+ Settings.freeLength < s.length() && case3 > res)
 		{
 			res = case3;
 			// Positive trace value indicates insertion

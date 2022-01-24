@@ -22,6 +22,7 @@ usage() {
 	echo ''
 	echo '  readname_list      - file containing list of reads to target (one per line)'
 	echo '  free_length        - number of bases at the end of each read which is aligned freely (default 50)'
+	echo '  global_free_length - number of bases from the end of longest read which is aligned freely (default -1, meaning no global free alignment)'
 	echo ''
 }
 
@@ -56,6 +57,9 @@ while [ $# -gt 0 ]; do
       ;;
     subtelomere_length=*)
       SUBTELOMERE_LENGTH="${1#*=}"
+      ;;
+    global_free_length=*)
+      GLOBAL_FREE_LENGTH="${1#*=}"
       ;;
     free_length=*)
       FREE_LENGTH="${1#*=}"
@@ -143,5 +147,5 @@ MOTIF=`samtools faidx $REFERENCE_GENOME $CHRNAME:$MOTIF_START-$MOTIF_END | tail 
 
 javac $BINDIR/src/*.java
 #echo $READS_FILE $PAF_FILE $OUTPREFIX $READNAME_LIST $MOTIF $SUBMOTIF
-java -cp $BINDIR/src MSA reads_file=$READS_FILE paf_file=$PAF_FILE out_prefix=$OUTPREFIX readlist_file=$READNAME_LIST motif=$MOTIF premotif=$SUBMOTIF free_length=$FREE_LENGTH
+java -cp $BINDIR/src MSA reads_file=$READS_FILE paf_file=$PAF_FILE out_prefix=$OUTPREFIX readlist_file=$READNAME_LIST motif=$MOTIF premotif=$SUBMOTIF free_length=$FREE_LENGTH global_free_length=$GLOBAL_FREE_LENGTH
 

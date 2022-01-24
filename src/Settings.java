@@ -8,6 +8,7 @@ public class Settings {
 	static String pafFile = "";
 	static int freeLength = 50;
 	static int subtelomereLength = 120;
+	static int globalFreeLength = -1;
 	
 	static double probInsertion = .02;
 	static double probInsertionContinue = .1;
@@ -34,6 +35,7 @@ public class Settings {
 		System.out.println();
 		System.out.println("Optional args:");
 		System.out.println("  free_length           (int) [50]  - the length of sequence at ends of reads which is not able to contain gaps");
+		System.out.println("  global_free_length    (int) [-1]  - the length of sequence from end of longest read which is not able to contain gaps");
 		System.out.println("  subtelomere_length    (int) [120] - the length of unique subtelomeric sequence to keep from each read");
 		System.out.println("  readlist_file  (String)           - a file contaning list of read names to consider, one per line");
 		System.out.println();
@@ -97,6 +99,9 @@ public class Settings {
 						break;
 					case("free_length"):
 						freeLength = Integer.parseInt(val);
+						break;
+					case("global_free_length"):
+						globalFreeLength = Integer.parseInt(val);
 						break;
 					case("subtelomere_length"):
 						subtelomereLength = Integer.parseInt(val);

@@ -88,6 +88,17 @@ public static void main(String[] args) throws Exception
 		}
 	}
 	
+	int maxLength = 0;
+	for(String s : readNameToTelomere.keySet())
+	{
+		String telomereSeq = readNameToTelomere.get(s);
+		if(maxLength == 0)
+		{
+			maxLength = telomereSeq.length();
+		}
+		maxLength = Math.max(maxLength, telomereSeq.length());
+	}
+	
 	MotifGraph mg = new MotifGraph(Settings.preMotif, Settings.motif);
 	
 	String[] names = new String[readNameToTelomere.size()];
@@ -103,7 +114,14 @@ public static void main(String[] args) throws Exception
 		names[idx] = s;
 		String telomereSeq = readNameToTelomere.get(s);
 		telomereSeq = revComp(telomereSeq);
-		alignments[idx] = mg.findOptimalPath(telomereSeq);
+		if(Settings.globalFreeLength == -1)
+		{
+			alignments[idx] = mg.findOptimalPath(telomereSeq);
+		}
+		else
+		{
+			alignments[idx] = mg.findOptimalPath(telomereSeq, Math.max(Settings.freeLength, Settings.globalFreeLength + telomereSeq.length() - maxLength));
+		}
 		idx++;
 		readsAligned++;
 	}
@@ -140,7 +158,7 @@ static HashSet<String> extractReadNames() throws Exception
  */
 static void printAlignments(String[][] alignments, String[] readNames, boolean filterSeqError, String outfile) throws Exception
 {
-	String[] res = combine(alignments, filterSeqError, Settings.preMotif);
+	String[] res = combine(alignments, filterSeqError);
 	
 	PrintWriter out = new PrintWriter(new File(outfile));
 	out.println("Multiple sequence alignment");
@@ -188,7 +206,7 @@ static String getKey(HashSet<String> readNames, String str)
 	return res;
 }
 
-static String[] combine(String[][] alignments, boolean filterErrors, String preMotif)
+static String[] combine(String[][] alignments, boolean filterErrors)
 {
 	int n = alignments.length;
 	StringBuilder[] preRes = new StringBuilder[n+1];
